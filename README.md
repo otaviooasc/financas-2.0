@@ -67,3 +67,10 @@ src
                               │    └── ReceitaServiceTest.java
                               └── integration            # Testes de integração
                                    └── ReceitaControllerIT.java
+
+```
+<img width="350" height="376" alt="image" src="https://github.com/user-attachments/assets/05b8d4eb-65d1-432c-a417-18394f6a3d0c" />
+
+
+
+
