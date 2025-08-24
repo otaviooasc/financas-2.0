@@ -4,6 +4,8 @@ import com.projeto.financeiro.infrastructure.persistence.entity.ReceitaEntity;
 import com.projeto.financeiro.infrastructure.rest.dto.ReceitaDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class ReceitaEntityConverter {
 
@@ -11,6 +13,17 @@ public class ReceitaEntityConverter {
 
         return ReceitaEntity
                 .builder()
+                .rendimentoAluguel(receitaDTO.rendimentoAluguel())
+                .rendimentoAplicacoes(receitaDTO.rendimentoAplicacoes())
+                .salarioLiquido(receitaDTO.salarioLiquido())
+                .build();
+    }
+
+    public final ReceitaEntity receitaEntityConverter(UUID id, ReceitaDTO receitaDTO) {
+
+        return ReceitaEntity
+                .builder()
+                .id(id)
                 .rendimentoAluguel(receitaDTO.rendimentoAluguel())
                 .rendimentoAplicacoes(receitaDTO.rendimentoAplicacoes())
                 .salarioLiquido(receitaDTO.salarioLiquido())
