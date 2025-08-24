@@ -71,6 +71,6 @@ src
 ```
 <img width="350" height="376" alt="image" src="https://github.com/user-attachments/assets/05b8d4eb-65d1-432c-a417-18394f6a3d0c" />
 
-
+http://localhost:8080/swagger-ui/index.html
 
 
