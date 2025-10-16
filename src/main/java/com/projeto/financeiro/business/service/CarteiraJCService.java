@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -43,13 +44,11 @@ public class CarteiraJCService implements CarteiraJCServiceUseCase {
 
         var entity = converterEntity.converterDtoToEntity(carteiraMensalDTO);
 
-        if (!carteiraMesPassado.isEmpty()) {
-            entity.setValorUltimoMes(carteiraMesPassado.getFirst().getCarteiraAtual());
-        } else if (carteiraMensalDTO.valorUltimoMes() != null) {
-            entity.setValorUltimoMes(carteiraMensalDTO.valorUltimoMes());
-        } else {
-            entity.setValorUltimoMes(new BigDecimal(0));
-        }
+        var valorUltimoMes = carteiraMesPassado.isEmpty()
+                ? Optional.ofNullable(carteiraMensalDTO.valorUltimoMes()).orElse(BigDecimal.ZERO)
+                : carteiraMesPassado.getFirst().getCarteiraAtual();
+
+        entity.setValorUltimoMes(valorUltimoMes);
 
         repositoryAdapter.save(entity);
     }
