@@ -51,5 +51,6 @@ public class DespesaFixaService implements DespesaFixaServiceUseCase {
         repositoryAdapter.findById(UUID.fromString(idDespesaFixa))
                 .orElseThrow(() -> new NaoFoiEncontradoException("Nenhuma despesa encontrada com esse id: " +
                         idDespesaFixa));
+        repositoryAdapter.deleteById(UUID.fromString(idDespesaFixa));
     }
 }
