@@ -4,6 +4,8 @@ import com.projeto.financeiro.infrastructure.entity.CarteiraMensalEntity;
 import com.projeto.financeiro.business.service.dto.CarteiraMensalDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class CarteiraMensalEntityConverter {
 
@@ -16,5 +18,14 @@ public class CarteiraMensalEntityConverter {
                 .carteiraAtual(receitaDTO.carteiraAtual())
                 .valorizacao(receitaDTO.valorizacao())
                 .build();
+    }
+
+    public final CarteiraMensalEntity convertDtoToEntityUpdate(CarteiraMensalDTO carteiraMensalDTO, CarteiraMensalEntity carteirasEntity) {
+        carteirasEntity.setRendaMensal(carteiraMensalDTO.rendaMensal());
+        carteirasEntity.setValorUltimoMes(carteiraMensalDTO.valorUltimoMes());
+        carteirasEntity.setCarteiraAtual(carteiraMensalDTO.carteiraAtual());
+        carteirasEntity.setValorizacao(carteiraMensalDTO.valorizacao());
+
+        return carteirasEntity;
     }
 }

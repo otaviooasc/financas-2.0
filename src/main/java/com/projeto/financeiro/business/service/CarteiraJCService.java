@@ -1,11 +1,13 @@
 package com.projeto.financeiro.business.service;
 
 
+import com.projeto.financeiro.application.exceptions.NaoFoiEncontradoException;
 import com.projeto.financeiro.application.utils.DataUtils;
 import com.projeto.financeiro.business.ports.CarteiraJCServiceUseCase;
 import com.projeto.financeiro.business.service.converter.CarteiraMensalEntityConverter;
 import com.projeto.financeiro.business.service.converter.CarteiraMensalResponseConverter;
 import com.projeto.financeiro.business.service.dto.CarteiraMensal;
+import com.projeto.financeiro.business.service.dto.CarteiraMensalDTO;
 import com.projeto.financeiro.infrastructure.repository.CarteiraJCRepositoryAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,10 +25,13 @@ public class CarteiraJCService implements CarteiraJCServiceUseCase {
     private final CarteiraMensalResponseConverter converterReponse;
 
     @Override
-    public List<CarteiraMensal> buscarCarteiraMensal(String mesAnoCarteira) {
-        return repositoryAdapter.findBymesAnoCarteira(mesAnoCarteira)
-                .stream().map(converterReponse::carteiraMensalResponseConverter)
-                .toList();
+    public CarteiraMensal buscarCarteiraMensal(String mesAnoCarteira) {
+        var carteira = repositoryAdapter.findByMesAnoCarteira(mesAnoCarteira);
+
+        if (carteira == null || carteira.getMesAnoCarteira().isEmpty()) {
+            throw new NaoFoiEncontradoException("Carteira não encontrada.");
+        }
+        return converterReponse.carteiraMensalResponseConverter(carteira);
     }
 
     @Override
@@ -37,19 +42,34 @@ public class CarteiraJCService implements CarteiraJCServiceUseCase {
     }
 
     @Override
-    public void salvarNovoMes(com.projeto.financeiro.business.service.dto.CarteiraMensalDTO carteiraMensalDTO) {
+    public void salvarNovoMes(CarteiraMensalDTO carteiraMensalDTO) {
         var mesAnterior = DataUtils.getMesAnterior(carteiraMensalDTO.mesAnoCarteira());
 
-        var carteiraMesPassado = repositoryAdapter.findBymesAnoCarteira(mesAnterior);
+        var carteiraMesPassado = repositoryAdapter.findByMesAnoCarteira(mesAnterior);
 
         var entity = converterEntity.converterDtoToEntity(carteiraMensalDTO);
 
-        var valorUltimoMes = carteiraMesPassado.isEmpty()
-                ? Optional.ofNullable(carteiraMensalDTO.valorUltimoMes()).orElse(BigDecimal.ZERO)
-                : carteiraMesPassado.getFirst().getCarteiraAtual();
+        var valorUltimoMes = BigDecimal.ZERO;
+        if (carteiraMesPassado != null && !carteiraMesPassado.getMesAnoCarteira().isEmpty()) {
+            valorUltimoMes = carteiraMesPassado.getCarteiraAtual();
+        }
 
         entity.setValorUltimoMes(valorUltimoMes);
 
         repositoryAdapter.save(entity);
+    }
+
+    @Override
+    public CarteiraMensal alterarCarteiraMes(CarteiraMensalDTO carteiraMensalDTO) {
+
+        var carteira = repositoryAdapter.findByMesAnoCarteira(carteiraMensalDTO.mesAnoCarteira());
+
+        if (carteira == null || carteira.getMesAnoCarteira().isEmpty()) {
+            throw new NaoFoiEncontradoException("Carteira não encontrada.");
+        }
+
+        return converterReponse.carteiraMensalResponseConverter(
+                repositoryAdapter.save(converterEntity.convertDtoToEntityUpdate(carteiraMensalDTO, carteira))
+        );
     }
 }

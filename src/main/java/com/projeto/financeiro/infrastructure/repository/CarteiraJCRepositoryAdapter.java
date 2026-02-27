@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface CarteiraJCRepositoryAdapter extends JpaRepository<CarteiraMensalEntity, UUID> {
-    List<CarteiraMensalEntity> findBymesAnoCarteira(String mesAnoCarteira);
+    CarteiraMensalEntity findByMesAnoCarteira(String mesAnoCarteira);
 }
