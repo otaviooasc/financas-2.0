@@ -2,7 +2,7 @@ package com.projeto.financeiro.business.service.dto;
 
 import java.math.BigDecimal;
 
-public record CarteiraMensal(String mesCarteira,
+public record CarteiraMensal(String mesAnoCarteira,
                              BigDecimal valorUltimoMes,
                              BigDecimal rendaMensal,
                              BigDecimal carteiraAtual,

@@ -2,6 +2,7 @@ package com.projeto.financeiro.controller;
 
 import com.projeto.financeiro.business.ports.CarteiraJCServiceUseCase;
 import com.projeto.financeiro.business.service.dto.CarteiraMensal;
+import com.projeto.financeiro.business.service.dto.CarteiraMensalDTO;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,14 +20,10 @@ public class CarteiraJurosCompostosController {
     private final CarteiraJCServiceUseCase serviceUseCase;
 
     @GetMapping("/buscar-carteira-mensal")
-    public ResponseEntity<List<CarteiraMensal>> buscarCarteiraMensal(
+    public ResponseEntity<CarteiraMensal> buscarCarteiraMensal(
             @Parameter(example = "01-2025")
             @RequestParam String mesAnoCarteira) {
-        var carteiraMensal = serviceUseCase.buscarCarteiraMensal(mesAnoCarteira);
-        if (carteiraMensal.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(carteiraMensal);
+        return ResponseEntity.ok(serviceUseCase.buscarCarteiraMensal(mesAnoCarteira));
     }
 
     @GetMapping("/buscar-todos")
@@ -39,8 +36,13 @@ public class CarteiraJurosCompostosController {
     }
 
     @PostMapping("/salvar-carteira-mensal")
-    public ResponseEntity<Void> salvarCarteiraMensal(@RequestBody com.projeto.financeiro.business.service.dto.CarteiraMensalDTO carteiraMensalDTO) {
+    public ResponseEntity<Void> salvarCarteiraMensal(@RequestBody CarteiraMensalDTO carteiraMensalDTO) {
         serviceUseCase.salvarNovoMes(carteiraMensalDTO);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/alterar-carteira-mensal")
+    public ResponseEntity<CarteiraMensal> alterarCarteiraMensal(@RequestBody CarteiraMensalDTO carteiraMensalDTO) {
+        return ResponseEntity.ok(serviceUseCase.alterarCarteiraMes(carteiraMensalDTO));
     }
 }
