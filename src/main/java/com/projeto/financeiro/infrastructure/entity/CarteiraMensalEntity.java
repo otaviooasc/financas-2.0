@@ -25,5 +25,5 @@ public class CarteiraMensalEntity {
     private BigDecimal valorUltimoMes;
     private BigDecimal rendaMensal;
     private BigDecimal carteiraAtual;
-    private BigDecimal valorizacao;
+    private BigDecimal variacao;
 }

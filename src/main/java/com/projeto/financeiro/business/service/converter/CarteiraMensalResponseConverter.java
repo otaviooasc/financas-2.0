@@ -17,7 +17,7 @@ public class CarteiraMensalResponseConverter {
                 entity.getValorUltimoMes(),
                 entity.getRendaMensal(),
                 entity.getCarteiraAtual(),
-                entity.getValorizacao(),
+                entity.getVariacao(),
                 gastoMensal,
                 calcularPorcentagemAlertaGastoMensal(entity.getRendaMensal(), gastoMensal),
                 calcularPorcentagemVariacaoMensal(entity.getCarteiraAtual(), entity.getValorUltimoMes()));
@@ -26,7 +26,7 @@ public class CarteiraMensalResponseConverter {
     private BigDecimal calcularGastoMensal(CarteiraMensalEntity entity) {
         return entity.getValorUltimoMes()
                 .add(entity.getRendaMensal())
-                .add(entity.getValorizacao())
+                .add(entity.getVariacao())
                 .subtract(entity.getCarteiraAtual());
     }
 
