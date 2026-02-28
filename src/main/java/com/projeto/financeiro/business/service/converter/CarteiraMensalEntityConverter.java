@@ -16,7 +16,7 @@ public class CarteiraMensalEntityConverter {
                 .mesAnoCarteira(receitaDTO.mesAnoCarteira())
                 .rendaMensal(receitaDTO.rendaMensal())
                 .carteiraAtual(receitaDTO.carteiraAtual())
-                .valorizacao(receitaDTO.valorizacao())
+                .variacao(receitaDTO.variacao())
                 .build();
     }
 
@@ -24,7 +24,7 @@ public class CarteiraMensalEntityConverter {
         carteirasEntity.setRendaMensal(carteiraMensalDTO.rendaMensal());
         carteirasEntity.setValorUltimoMes(carteiraMensalDTO.valorUltimoMes());
         carteirasEntity.setCarteiraAtual(carteiraMensalDTO.carteiraAtual());
-        carteirasEntity.setValorizacao(carteiraMensalDTO.valorizacao());
+        carteirasEntity.setVariacao(carteiraMensalDTO.variacao());
 
         return carteirasEntity;
     }

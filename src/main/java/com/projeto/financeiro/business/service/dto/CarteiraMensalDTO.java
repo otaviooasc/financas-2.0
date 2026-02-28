@@ -14,4 +14,4 @@ public record CarteiraMensalDTO(
         @Schema(description = "Valor da carteira mensal", example = "250.00")
         BigDecimal carteiraAtual,
         @Schema(description = "Valor da valorização mensal", example = "150.00")
-        BigDecimal valorizacao) {}
+        BigDecimal variacao) {}

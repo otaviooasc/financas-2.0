@@ -11,12 +11,13 @@ import com.projeto.financeiro.business.service.dto.CarteiraMensalDTO;
 import com.projeto.financeiro.infrastructure.repository.CarteiraJCRepositoryAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class CarteiraJCService implements CarteiraJCServiceUseCase {
 
@@ -26,6 +27,7 @@ public class CarteiraJCService implements CarteiraJCServiceUseCase {
 
     @Override
     public CarteiraMensal buscarCarteiraMensal(String mesAnoCarteira) {
+
         var carteira = repositoryAdapter.findByMesAnoCarteira(mesAnoCarteira);
 
         if (carteira == null || carteira.getMesAnoCarteira().isEmpty()) {
@@ -36,6 +38,7 @@ public class CarteiraJCService implements CarteiraJCServiceUseCase {
 
     @Override
     public List<CarteiraMensal> buscarTodos() {
+
         return repositoryAdapter.findAll()
                 .stream().map(converterReponse::carteiraMensalResponseConverter)
                 .toList();
@@ -43,6 +46,7 @@ public class CarteiraJCService implements CarteiraJCServiceUseCase {
 
     @Override
     public void salvarNovoMes(CarteiraMensalDTO carteiraMensalDTO) {
+
         var mesAnterior = DataUtils.getMesAnterior(carteiraMensalDTO.mesAnoCarteira());
 
         var carteiraMesPassado = repositoryAdapter.findByMesAnoCarteira(mesAnterior);
@@ -71,5 +75,17 @@ public class CarteiraJCService implements CarteiraJCServiceUseCase {
         return converterReponse.carteiraMensalResponseConverter(
                 repositoryAdapter.save(converterEntity.convertDtoToEntityUpdate(carteiraMensalDTO, carteira))
         );
+    }
+
+    @Override
+    public void deletarMesCarteira(String mesAnoCarteira) {
+
+        var carteira = repositoryAdapter.findByMesAnoCarteira(mesAnoCarteira);
+
+        if (carteira == null || carteira.getMesAnoCarteira().isEmpty()) {
+            throw new NaoFoiEncontradoException("Carteira não encontrada.");
+        }
+
+        repositoryAdapter.deleteByMesAnoCarteira(mesAnoCarteira);
     }
 }

@@ -6,6 +6,7 @@ import com.projeto.financeiro.business.service.dto.CarteiraMensalDTO;
 import java.util.List;
 
 public interface CarteiraJCServiceUseCase {
+
     CarteiraMensal buscarCarteiraMensal(String mesAnoCarteira);
 
     List<CarteiraMensal> buscarTodos();
@@ -13,4 +14,6 @@ public interface CarteiraJCServiceUseCase {
     void salvarNovoMes(CarteiraMensalDTO carteiraMensalDTO);
 
     CarteiraMensal alterarCarteiraMes(CarteiraMensalDTO carteiraMensalDTO);
+
+    void deletarMesCarteira(String mesAnoCarteira);
 }
